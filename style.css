@@ -335,16 +335,7 @@ form.sign-in-form {
     font-size: 0.7rem;
   }
 
-  .container:before {
-    width: 1500px;
-    height: 1500px;
-    transform: translateX(-50%);
-    left: 30%;
-    bottom: 68%;
-    right: initial;
-    top: initial;
-    transition: 2s ease-in-out;
-  }
+ 
 
   .container.sign-up-mode:before {
     transform: translate(-50%, 100%);
