@@ -50,30 +50,74 @@
   <span class="login100-form-title p-b-26">
 Welcome
 </span>
-  <div class="container">
+<span class="login100-form-title p-b-26">
+      <div id="gpa"></div>
+</span>
+  <div id="course-input" class="container">
 
-    <div class="wrap-input100 validate-input form-group">
-      <input id="credit" min="1" max="10" class="input100" type="number" name="Credit" required>
-      <span class="focus-input100" data-placeholder="Credit"></span>
-      </div>
+    <div id="course-input" class="wrap-input100 validate-input form-group">
+      <input id="course-name" class="input100" type="text" name="Credit" >
+      <span class="focus-input100" data-placeholder="course Name"></span>
+    </div>
 
-      <div class="wrap-input100 validate-input form-group">
-        <input id="grade" mim="1" max="5" class="input100" type="number" name="Credit" required>
+    <div id="course-input" class="wrap-input100 validate-input form-group">
+        <input id="course-grade" mim="1" max="5" class="input100" type="number" name="Credit" >
         <span class="focus-input100" data-placeholder="Grade (i.e A:5 B:4 C:3 D:2 E:1 F:0)"></span>
-        </div>
+    </div>
 
+    <div id="course-input" class="wrap-input100 validate-input form-group">
+        <input id="course-unit" mim="0" max="10" class="input100" type="number" name="Credit" required>
+        <span class="focus-input100" data-placeholder="Credit unit"></span>
+    </div>
+    <button onclick="addCourse()">Add Course</button>
 
+   
+    
+    <div id="course-list"></div>
     
 
-    <div class="container-login100-form-btn">
-      <div class="wrap-login100-form-btn">
-      <div class="login100-form-bgbtn"></div>
-      <button onclick="addCourse()">Add Course</button>
-      <button onclick="calculateCgpa()">Calculate CGPA</button>
-      <div class="result" id="result"></div>
-        </div>
-      </div>
-      
+    
+    <script>
+        const courses = [];
+        
+        function addCourse() {
+            const courseName = document.getElementById("course-name").value;
+            const courseGrade = parseFloat(document.getElementById("course-grade").value);
+            const courseUnit = parseFloat(document.getElementById("course-unit").value);
+            
+            if (courseName && !isNaN(courseGrade) && !isNaN(courseUnit)) {
+                const course = {
+                    name: courseName,
+                    grade: courseGrade,
+                    unit: courseUnit
+                };
+                
+                courses.push(course);
+                
+                const courseList = document.getElementById("course-list");
+                const listItem = document.createElement("p");
+                listItem.textContent = `Course : ${course.name} | Grade : ${course.grade} | Unit : ${course.unit}`;
+                courseList.appendChild(listItem);
+                
+                document.getElementById("course-name").value = "";
+                document.getElementById("course-grade").value = "";
+                document.getElementById("course-unit").value = "";
+                
+                calculateCGPA();
+            }
+        }
+        
+        function calculateCGPA() {
+            const totalGradeUnit = courses.reduce((sum, course) => sum + (course.grade * course.unit), 0);
+            const totalUnits = courses.reduce((sum, course) => sum + course.unit, 0);
+            const cgpa = totalGradeUnit / totalUnits;
+            
+            const cgpaDisplay = document.getElementById("gpa");
+            cgpaDisplay.textContent = `GPA: ${cgpa.toFixed(2)}`;
+        }
+    </script>
+
+
 
 
 
@@ -82,49 +126,10 @@ Welcome
 </div>
 </div>
 </div>
-<div id="dropDownSelect1"></div>
 
 
   
   
-  <script>
-    let credits = [];
-    let grades = [];
-
-    function addCourse() {
-      const creditInput = document.getElementById('credit');
-      const gradeInput = document.getElementById('grade');
-      const credit = parseInt(creditInput.value);
-      const grade = parseInt(gradeInput.value);
-      
-      if (isNaN(credit) || isNaN(grade)) {
-        return;
-      }
-      
-      credits.push(credit);
-      grades.push(grade);
-      
-      creditInput.value = '';
-      gradeInput.value = '';
-    }
-
-    function calculateCgpa() {
-      if (credits.length === 0 || grades.length === 0) {
-        return;
-      }
-      
-      let totalCredits = credits.reduce((a, b) => a + b);
-      let weightedSum = 0;
-      
-      for (let i = 0; i < credits.length; i++) {
-        weightedSum += credits[i] * grades[i];
-      }
-      
-      let cgpa = weightedSum / totalCredits;
-      
-      const resultElement = document.getElementById('result');
-      resultElement.innerText = `Your CGPA: ${cgpa.toFixed(2)}`;
-    }
-  </script>
 </body>
 </html>
+
